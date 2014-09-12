@@ -7,6 +7,9 @@ li {margin: 1em 0}
     background: #FFFFF;
 }
 
+#container a:link {
+    color: #00458a;
+}
 
 #header {  
     background-color: #dce6ef;
