@@ -1,8 +1,8 @@
-li {margin: 1em 0}
+li {margin: 0.5em 0}
 
 #container {
-    min-width: 300px;
-    max-width: 900px;
+    min-width: 400px;
+    max-width: 650px;
     margin: 0 auto;
     background: #FFFFF;
 }
