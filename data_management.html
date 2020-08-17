@@ -1,0 +1,101 @@
+This document was initially written for file-based management of microscopy image data though the ideas presented should be generally applicable to any kind of data.
+
+<p><strong>1- Keep track of all processing steps and data used to create a figure.</strong></p>
+<p>There should be an uninterrupted and unambiguous chain from reagents to raw data to each figure of a published paper. Anybody should be able to follow this chain, not just the people who’ve been involved in the work. Disambiguate reagents by always associating them with a database identifier (either from an internal database or from a supplier’s catalog).</p>
+<p><strong>2- Create a project folder with sub-folders for experiments.</strong></p>
+<ul>
+<li>Organize files consistently by source or experiment/analysis type.</li>
+<li>Separate primary data, analysis results and code.</li>
+<li>Keep a plain text documentation file in each folder (e.g. README.txt)</li>
+</ul>
+<p><strong>3- Name files and folders in a consistent way.</strong></p>
+<ul>
+<li>Define conventions at the beginning of the project and write them down so that you can refer to them later and stick to them.<br />
+</li>
+<li>When working with collaborators, make sure everyone follows the conventions, share the written document in which the conventions are defined.<br />
+</li>
+<li>Each name should be unique, indicative of content and machine-readable.<br />
+</li>
+<li>Essential rules for naming files and folders are:
+<ul>
+<li>hard-code essential information in file names in a consistent way, i.e. always in the same order and in a standardized way, e.g. use ISO format for dates: yyyy-mm-dd (e.g what date is 20-10-12? Is it 12 October 2020 or 20 October 2012 or 10 December 2020?) and use official gene symbols, e.g. RANBP2 not NUP358.</li>
+<li>use only ASCII alphanumerical characters, i.e. 0-9, a-z, A-Z and separate meaningful fields/information using underscore or hyphens. Do not use spaces.</li>
+</ul></li>
+</ul>
+<p><strong>4- Document data.</strong></p>
+<p>The data documentation file should describe:
+    <ul>
+	<li> how the data was created,</li>
+	<li> the naming conventions,</li>
+	<li> the data type, format and structure (i.e. dimensions of the data and what each dimension represents),</li>
+	<li> measurements units,</li>
+	<li> coding schemes used, e.g. code used for missing data</li></ul></p>
+<p>Template files are available for <a href="metadata_templates/image_metadata.template.yml">images</a> and <a href="metadata_templates/array_metadata.template.yml">arrays</a> (i.e. tabular and higher dimensional data). The templates are in the <a href="http://yaml.org/spec/1.2/spec.html">YAML format</a> which is both human- and computer-readable and writable. For a quick introduction see the <a href="https://en.wikipedia.org/wiki/YAML">wikipedia article</a>. Once the metadata have been entered, verify that the file is still a valid YAML file using a YAML validator (e.g. <a href="http://beautifytools.com/yaml-validator.php">online</a>).</p>
+<p><strong>5- Document data processing steps.</strong></p>
+<ul>
+	<li>record software and parameter choices, including code/software versions (use <a href="https://git.embl.de/">EMBL's GitLab instance</a> for your own code)</li>
+<li>record exact command line used</li>
+<li>record pre/post-processing steps</li>
+<li>use a code notebook (e.g. Rstudio, Jupyter …)</li>
+</ul>
+<p>If you can, use a workflow management system (e.g.<a href="https://snakemake.readthedocs.io/en/stable/">snakemake</a>, <a href="https://www.nextflow.io/">nextflow</a>, <a href="https://usegalaxy.eu/">Galaxy</a>, <a href="https://docs.ropensci.org/drake/">drake</a> …), it will take care (among other things) of documenting the processing steps for you.</p>
+<p><strong>6- Don’t keep unused/unusable data.</strong></p>
+<ul>
+<li>archive primary data on tape as soon as possible after acquisition</li>
+<li>delete data from the file system if you’re not sure you’re going to use them, you can restore them from tape if need be (experience shows that if you're not using the data now, you most likely never will).</li>
+</ul>
+<p><strong>7- Prepare tabular data for processing and re-use.</strong></p>
+<ul>
+    <li>store as tab-delimited plain text file (do not use spreadsheet software like Excel for storing/saving data, for example of issues, see this <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-5-80">paper</a> and also this <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1044-7">one</a>)</li>
+<li>always use row and column headers and place them respectively in the first column and the first row</li>
+<li>use rows for records (e.g. samples, genes, objects …) and columns for variables (e.g. measurements, features …)</li>
+<li>headers must be unique, unambiguous and self-explanatory and consists only of alphanumeric characters, underscores or hyphens (no spaces).</li>
+<li>each row should contain as much of the relevant data as possible</li>
+<li>each cell should contain only one item or type of data</li>
+<li>use one file for each processing/analysis step, don’t mix different data in the same file</li>
+<li>indicate missing data by leaving the corresponding cell empty or using the missing data code defined in the accompanying documentation file</li>
+<li>include relevant metadata in the accompanying documentation file</li>
+<li>do quality control and consistency checks by inspecting a small random sample of the data and computing some summary statistics, e.g. do the rows/columns add up to the expected values ?</li>
+<li>consider using a relational database:
+<ul>
+<li>if you start repeating the same information across several files (i.e. changing one piece of information requires updating multiple files)</li>
+<li>if accessing specific subsets of the data is difficult (e.g. it requires combining multiple files)</li>
+<li>if the amount of data becomes unmanageable</li>
+<li>if multiple people or processes need access to the data at the same time</li>
+</ul></li>
+</ul>
+<p><strong>8- High-throughput data.</strong></p>
+<p>Organize the data hierarchically by plate and well as this is the structure most analysis software can use, e.g.:</p>
+<p>▽ Chromosome_condensation_project<br />
+      ▽ primary_screen<br />
+          ▽ images<br />
+              ▽ plate1_replicate1<br />
+                  ▽ well001<br />
+                      W001-P001-Z000-T0000-s1234-Cy3.tif<br />
+                      W001-P001-Z000-T0000-s1234-EGFP.tif<br />
+                  ▷ well002<br />
+              ▷ plate1_replicate2<br />
+              ▷ plate2_replicate1<br />
+          ▽ analysis<br />
+              ▷ configuration_files<br />
+              ▷ segmentation<br />
+              ▽ feature_extraction<br />
+                  ▽ plate1_replicate1<br />
+                      ▽ well001<br />
+                          W001-P001-Z000-T0000-s1234-Cy3.txt<br />
+                          W001-P001-Z000-T0000-s1234-EGFP.txt<br />
+                      ▷ well002<br />
+                  ▷ plate1_replicate2<br />
+                  ▷ plate2_replicate1<br />
+          ▷ code<br />
+      ▷ validation_screen</p>
+<ul>
+<li>It is imperative to define naming and other conventions at the start of the project (see point 3 above). Respect of these conventions is extremely important as the volume of data usually prevents easy detection and fixing of problems.</li>
+<li>Automate all data writing steps. Never write or edit file names or data by hand. If there’s an issue, fix the code causing the problem.</li>
+<li>It is strongly recommended to build a database to capture relationships between different entities (e.g. association between reagents, images and proteins/genes) and associated metadata (e.g. what passed which quality control step, what data is derived from what…). The time invested doing this at the beginning will be largely repaid by the end of the project. Without a database, long-running projects always run into time-consuming data issues towards the end.</li>
+<li>All code used in the project should get its input parameters from a configuration file.</li>
+<li>Code used in the project should read from, and write to, the project database. This keeps the database up-to-date in a timely manner and ensures collaborators are all working with the same data.</li>
+<li>Keep configuration files and code under version control to keep track of the different iterations of the data analysis.</li>
+</ul>
+<p><strong>9- Ensure file integrity</strong></p>
+<p>Although infrequent, errors can happen when copying or moving files so copies should be checked against the original. This is done by comparing checksums of the two files. A simple way of doing this is to copy files using rsync then repeating the rsync command with the -n option to compare the two copies. Avoid copying files using drag-and-drop motions.</p>

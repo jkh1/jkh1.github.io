@@ -1,0 +1,17 @@
+%YAML 1.2
+# This file is in the YAML format. See http://yaml.org/spec/1.2/spec.html
+# Check validity at https://codebeautify.org/yaml-validator
+Data name: # name of the file this metadata file is about
+Data dimensions: # as rows x columns x tubes x dim4 ...
+Dimension names: [] # comma-separated list in square brackets, e.g. [genes, features, time]
+File format: # e.g. text, hdf5 ...
+Delimiter: # for use when format is text, e.g. \t (tab) or , (comma)
+Missing data code: # e.g. empty or NA
+Generation process: > # how the data was produced, enter text after the > sign
+Lab book reference: # for experimental data, either lab book page or ELN URL
+Code notebook reference: # name of the RStudio or Jupyter notebook used to produce the data
+Command line: # command used to produce the data if run in a terminal
+Git commit: # Git repository URL of the version of the code used to produce the data
+Software: # software used to produce the data, including version number
+Parameters: {} # comma-separated list of software parameters used as key:value pairs in curly brackets, e.g. {alpha: abcd, pi:3.1459}
+Derived from: [] # list of data files or directories required as input to the code or software used to produce the data described here

@@ -1,0 +1,30 @@
+%YAML 1.2
+# This file is in the YAML format. See http://yaml.org/spec/1.2/spec.html
+# Check validity at https://codebeautify.org/yaml-validator
+Image dimensions: # as XxYxZxCxT
+Total data size: # specify unit in Mb, Gb or Tb
+Channels:
+- channel 1:
+  - entity:
+  - label:
+- channel 2:
+  - entity:
+  - label:
+- channel 3:
+  - entity:
+  - label:
+Time point: 
+Position: [] # comma-separated list of plate-well-field
+Imaging Method:
+Species:
+- name: #
+- taxon: # ID from the NCBI taxonomy database
+Developmental stage:
+Cell line:
+Genes:
+- symbols: [] # comma-separated list in square brackets
+- identifiers: [] # comma-separated list, same order as in symbols
+- reference database:
+Experiment description: > # Enter text after the > sign
+Protocol description: > # Enter text after the > sign
+Associated data files: [] # comma-separated list in square brackets
