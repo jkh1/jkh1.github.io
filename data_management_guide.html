@@ -33,10 +33,17 @@
 </ul>
 <p>Template files are available for <a href="metadata_templates/image_metadata.template.yml"><strong>images</strong></a> and <a href="metadata_templates/array_metadata.template.yml"><strong>arrays</strong></a> (i.e. tabular and higher dimensional data). The templates are in the <a href="http://yaml.org/spec/1.2/spec.html"><strong>YAML format</strong></a> which is both human- and computer-readable and writable. For a quick introduction see the <a href="https://en.wikipedia.org/wiki/YAML"><strong>wikipedia article</strong></a>. Once the metadata have been entered, verify that the file is still a valid YAML file using a YAML validator (e.g. <a href="http://beautifytools.com/yaml-validator.php"><strong>online</strong></a>).</p>
 <p><strong>5- Register your project and its data in a data management system.</strong></p>
-<p>Use either the <a href="https://dma.embl.de">Data Management app</a> or <a href="https://stocks.embl.de">STOCKS</a>.**</p>
+<p>At EMBL, use either the <a href="https://dma.embl.de">Data Management app</a> or <a href="https://stocks.embl.de">STOCKS</a>.</p>
 <p>STOCKS is a more comprehensive system with electronic lab notebook and LIMS functionalities allowing you to link data sets to samples, reagents and protocols.</p>
 <p>The DM app is a lightweight data registration system with minimal support for metadata.</p>
-<p>For the DM app: * Log into <a href="https://dma.embl.de" class="uri">https://dma.embl.de</a> * Create a data collection for your project. * Add new data sets as soon as they are created. Create a new entry either by linking the data to the project’s collection or as derived data from another data set. * Add a few relevant tags from the Experimental Factor Ontology and/or the Gene Ontology. * Make sure a metadata/documentation file is present in each data set folder (see point 4).</p>
+<p>For the DM app:
+    <ul>
+	<li> Log into <a href="https://dma.embl.de" class="uri">https://dma.embl.de</a> Create a data collection for your project.</li>
+	<li> Add new data sets as soon as they are created. Create a new entry either by linking the data to the project’s collection or as derived data from another data set.</li>
+	<li> Add a few relevant tags from the Experimental Factor Ontology and/or the Gene Ontology.</li>
+	<li> Make sure a metadata/documentation file is present in each data set folder (see point 4).</li>
+    </ul>
+</p>
 <p><strong>6- Document data processing steps.</strong></p>
 <ul>
 <li>Record software and parameter choices, including code/software versions (use GitLab for your own code).</li>
@@ -44,7 +51,7 @@
 <li>Record pre/post-processing steps.</li>
 <li>Use a code notebook (e.g. Rstudio, Jupyter …).</li>
 </ul>
-<p>If you can, use a workflow management system (e.g.<a href="https://snakemake.readthedocs.io/en/stable/"><strong>snakemake</strong></a>, <a href="https://www.nextflow.io/"><strong>nextflow</strong></a>, <a href="https://galaxyproject.org/"><strong>Galaxy</strong></a>: <a href="https://galaxy.embl.de">EMBL server</a> or <a href="https://usegalaxy.eu/">public server</a>, <a href="https://docs.ropensci.org/targets/"><strong>targets</strong></a> …), it will take care (among other things) of documenting the processing steps for you.</p>
+<p>If you can, use a workflow management system (e.g.<a href="https://snakemake.readthedocs.io/en/stable/"><strong>snakemake</strong></a>, <a href="https://www.nextflow.io/"><strong>nextflow</strong></a>, <a href="https://galaxyproject.org/"><strong>Galaxy</strong></a> (e.g. <a href="https://usegalaxy.eu/">public server</a>), <a href="https://docs.ropensci.org/targets/"><strong>targets</strong></a> …), it will take care (among other things) of documenting the processing steps for you.</p>
 <p><strong>7- Don’t keep unused/unusable data.</strong></p>
 <ul>
 <li>Archive primary data on tape as soon as possible after acquisition. You can use the DM app for this.</li>
