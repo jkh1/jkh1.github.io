@@ -11,7 +11,7 @@
 
 
 
-<title>data_management_guide</title>
+<title>project_organisation</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -352,194 +352,98 @@ display: none;
 </div>
 
 
-<div id="data-management-guide" class="section level2">
-<h2>Data management guide</h2>
-<p>This version of the data management guide was <strong>updated 11 May
-2022</strong>.</p>
-<p>This guide is intended to inform parts of your project data
-management plan. You can use it to answer some of the questions in the
-<a href="data_management_checklist.html"><strong>data management
-checklist</strong></a>.</p>
-<p><strong>1- Keep track of all processing steps and data used to create
-a figure.</strong></p>
-<p>There should be an uninterrupted and unambiguous chain from reagents
-to raw data to each figure of a published paper. Anybody should be able
-to follow this chain, not just the people who’ve been involved in the
-work. Disambiguate reagents by always associating them with a database
-identifier (either from an internal database or from a supplier’s
-catalog).</p>
-<p><strong>2- Create a project folder with sub-folders for experiments
-and data sets.</strong></p>
+<div id="project-organisation" class="section level2">
+<h2>Project organisation</h2>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>This page presents one of several ways to organise a computational
+project.</p>
+<p>The main ideas driving the organisation of the project should be to
+facilitate sharing and collaborative work and to eventually publicly
+release the project. This document suggests a standard way to organize
+data and code for your project and can be used as part of your data
+management plan.</p>
+<p>To keep track of all the changes as the project evolves, the
+project’s content is managed in a git repository hosted on EMBL’s GitLab
+instance. Using GitLab also gives the opportunity to use additional
+tools for project management.</p>
+<p>You can create your own project structure from the <a href="https://git.embl.de/heriche/project-template">available
+template</a> with:</p>
+<pre><code>git clone https://git.embl.de/heriche/project-template.git ProjectName
+cd ProjectName
+git remote set-url origin git@git.embl.de:&lt;namespace&gt;/ProjectName.git
+git push</code></pre>
+<p>Replace ProjectName above with the name of your project (use
+alpha-numerical characters, _ (underscore) and - (hyphen), and don’t use
+white spaces or special characters) and &lt;namespace&gt; with the group
+or user name under which you want the project to live.</p>
+</div>
+<div id="project-structure" class="section level3">
+<h3>Project structure</h3>
+<p>The suggested repository structure is as follows:</p>
 <ul>
-<li>Organize files consistently by source or experiment/analysis
-type.</li>
-<li>Separate primary data, analysis results and code.</li>
-<li>Create a sub-directory for each data set.</li>
-<li>Place the data management plan in the project folder.</li>
-<li>Keep a plain text documentation file (e.g. README.txt) and specific
-metadata files in each sub-folder.</li>
+<li><strong>.gitignore</strong>: This file contains a list of regular
+expressions matching names of files and directories that shouldn’t be
+included in the repository such as temporary files or files that can
+contain secrets. The template already contains some common occurrences
+but make sure to customize it for your project.</li>
+<li><strong>data/</strong>: This directory is where your code should be
+looking for its input data. It can be used in various ways:</li>
+<li>To store a small amount of data (less than 100 MB at EMBL), in
+particular test data.</li>
+<li>To track larger data files with git lfs (see <a href="https://git-lfs.com/" class="uri">https://git-lfs.com/</a>, <a href="https://gitlab.ub.uni-giessen.de/jlugitlab/git-lfs-howto" class="uri">https://gitlab.ub.uni-giessen.de/jlugitlab/git-lfs-howto</a>
+and <a href="https://docs.gitlab.com/ee/topics/git/lfs/" class="uri">https://docs.gitlab.com/ee/topics/git/lfs/</a>).</li>
+<li>To store configuration files pointing to data stored elsewhere
+(e.g. S3 bucket, make sure not to store credentials here).</li>
+<li><strong>output/</strong>: This directory is where your code should
+write its output. The same rules apply as for the data directory. When
+some output is used as input data for another step of the analysis, you
+may decide to put it instead under the data directory. A good rule of
+thumb is to use the output directory to store end results, i.e. files
+that are not going to be processed further, regardless of the step in
+the workflow, such as plots and summary tables.</li>
+<li><strong>documentation/</strong>: This directory is where project
+documentation should live unless you prefer to use the wiki associated
+with the repository in GitLab (see <a href="https://docs.gitlab.com/ee/user/project/wiki/" class="uri">https://docs.gitlab.com/ee/user/project/wiki/</a>). This
+should include the project’s data management plan.</li>
+<li><strong>workflow/</strong>: This directory is where your data
+processing code should reside. If multiple steps are involved that use
+different pieces of code, use a subdirectory for each step. You can also
+have separate repositories for each step and link them here using git
+submodules (see <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules" class="uri">https://git-scm.com/book/en/v2/Git-Tools-Submodules</a> and
+<a href="https://gist.github.com/gitaarik/8735255" class="uri">https://gist.github.com/gitaarik/8735255</a>).</li>
+<li><strong>README.md</strong>: This plain text file, written using
+markdown syntax, is the landing page of the project. As such, it should
+provide a description of the project and how to reproducibly run the
+analysis. It should be kept short with links to the documentation for
+details.</li>
+<li><strong>LICENSE</strong>: It is important to explicitly provide a
+license for the project as without one, nobody can use, copy or
+distribute the content without asking for permission from the author(s).
+As this can vary from project to project, the template doesn’t provide
+this file so make sure to add a suitable one.</li>
 </ul>
-<p>Check the <a href="project_organisation.html"><strong>project
-organisation</strong> page</a> for some suggestion on how to organize
-and manage a project folder.</p>
-<p><strong>3- Name files and folders in a consistent way.</strong></p>
+</div>
+<div id="leveraging-git-and-gitlab-tools-for-project-management" class="section level3">
+<h3>Leveraging git and GitLab tools for project management</h3>
 <ul>
-<li>Define conventions at the beginning of the project and write them
-down in the data management plan so that you can refer to them later and
-stick to them.</li>
-<li>When working with collaborators, make sure everyone follows the
-conventions, share the data management plan.</li>
-<li>Each name should be unique, indicative of content and
-machine-readable.</li>
-<li>Essential rules for naming files and folders are:</li>
-<li>hard-code essential information in file names in a consistent way,
-i.e. always in the same order and in a standardized way, e.g. use ISO
-format for dates: yyyy-mm-dd and use official gene symbols, e.g. RANBP2
-not NUP358.</li>
-<li>use only ASCII alphanumerical characters, i.e. 0-9, a-z, A-Z and
-separate meaningful fields/information using underscore. Do not use
-spaces or hyphens.</li>
+<li>Use branches for testing different methods or workflows.</li>
+<li>Keep track of versions by using tags. Use semantic versioning when
+possible, i.e. with tags of the form vX.Y.Z where X is incremented for
+significant changes, Y when new functionality is added and Z for bug
+fixes. Make sure to add a meaningful message to the tag.</li>
+<li>Use the issue tracker to keep track of problems and ideas and
+discuss them with collaborators.</li>
+<li>Use an issue board (see <a href="https://docs.gitlab.com/ee/user/project/issue_board.html" class="uri">https://docs.gitlab.com/ee/user/project/issue_board.html</a>)
+to organize and visualize progress (with Kanban style cards).</li>
+<li>Integrate multiple repositories with git submodules.</li>
+<li>Use continuous integration and deployment to build and deploy
+software.</li>
+<li>Use the GitLab wiki associated with the repository to document the
+project.</li>
+<li>Create a project’s website using GitLab Pages (see <a href="https://bio-it.embl.de/gitlab-pages/" class="uri">https://bio-it.embl.de/gitlab-pages/</a>)</li>
 </ul>
-<p><strong>4- Document data.</strong></p>
-<p>The data documentation file should describe:</p>
-<ul>
-<li>how the data was created,</li>
-<li>the naming conventions (or refer to the data management plan),</li>
-<li>the data type, format and structure (i.e. dimensions of the data and
-what each dimension represents),</li>
-<li>measurements units,</li>
-<li>coding schemes used, e.g. code used for missing data</li>
-</ul>
-<p>Template files are available for <a href="https://git.embl.de/grp-ellenberg/Ellenberg_SOP/blob/master/metadata_templates/image_metadata.template.yml"><strong>images</strong></a>
-and <a href="https://git.embl.de/grp-ellenberg/Ellenberg_SOP/blob/master/metadata_templates/array_metadata.template.yml"><strong>arrays</strong></a>
-(i.e. tabular and higher dimensional data). The templates are in the <a href="http://yaml.org/spec/1.2/spec.html"><strong>YAML
-format</strong></a> which is both human- and computer-readable and
-writable. For a quick introduction see the <a href="https://en.wikipedia.org/wiki/YAML"><strong>wikipedia
-article</strong></a>. Once the metadata have been entered, verify that
-the file is still a valid YAML file using a YAML validator (e.g. <a href="http://beautifytools.com/yaml-validator.php"><strong>online</strong></a>).</p>
-<p><strong>5- Register your project and its data in a data management
-system.</strong></p>
-<p>At EMBL, use either the <a href="https://dma.embl.de">Data Management
-app</a> or <a href="https://stocks.embl.de">STOCKS</a>.</p>
-<p>STOCKS is a more comprehensive system with electronic lab notebook
-and LIMS functionalities allowing you to link data sets to samples,
-reagents and protocols.</p>
-<p>The DM app is a lightweight data registration system with minimal
-support for metadata.</p>
-<p><strong>6- Document data processing steps.</strong></p>
-<ul>
-<li>Record software and parameter choices, including code/software
-versions (use GitLab for your own code).</li>
-<li>Record exact command line used.</li>
-<li>Record pre/post-processing steps.</li>
-<li>Use a code notebook (e.g. Rstudio, Jupyter …).</li>
-</ul>
-<p>If you can, use a workflow management system (e.g.<a href="https://snakemake.readthedocs.io/en/stable/"><strong>snakemake</strong></a>,
-<a href="https://www.nextflow.io/"><strong>nextflow</strong></a>, <a href="https://galaxyproject.org/"><strong>Galaxy</strong></a>: <a href="https://galaxy.embl.de">EMBL server</a> or <a href="https://usegalaxy.eu/">public server</a>, <a href="https://docs.ropensci.org/targets/"><strong>targets</strong></a>
-…), it will take care (among other things) of documenting the processing
-steps for you.</p>
-<p><strong>7- Don’t keep unused/unusable data.</strong></p>
-<ul>
-<li>Archive primary data on tape as soon as possible after acquisition.
-You can use the DM app for this.</li>
-<li>Delete data from the file system if you’re not sure you’re going to
-use them, you can restore them from tape using the DM app.</li>
-</ul>
-<p><strong>8- Prepare tabular data for processing and
-re-use.</strong></p>
-<ul>
-<li>Store as tab-delimited plain text file (do not use spreadsheet
-software like Excel for storing/saving data)</li>
-<li>Always use row and column headers and place them respectively in the
-first column and the first row</li>
-<li>Use rows for records (e.g. samples, genes, objects …) and columns
-for variables (e.g. measurements, features …)</li>
-<li>Headers must be unique, unambiguous and self-explanatory and
-consists only of alphanumeric characters and underscores (no spaces or
-hyphens).</li>
-<li>Each row should contain as much of the relevant data as
-possible.</li>
-<li>Each cell should contain only one item or type of data.</li>
-<li>Use one file for each processing/analysis step, don’t mix different
-data in the same file.</li>
-<li>Indicate missing data by leaving the corresponding cell empty or
-using the missing data code defined in the accompanying documentation
-file.</li>
-<li>Include relevant metadata in the accompanying documentation
-file.</li>
-<li>Do quality control and consistency checks by inspecting a small
-random sample of the data and computing some summary statistics, e.g. do
-the rows/columns add up to the expected values ?</li>
-<li>Consider using a relational database:</li>
-<li>if you start repeating the same information across several files
-(i.e. changing one piece of information requires updating multiple
-files),</li>
-<li>if accessing specific subsets of the data is difficult (e.g. it
-requires combining multiple files),</li>
-<li>if the amount of data becomes unmanageable,</li>
-<li>if multiple people or processes need access to the data at the same
-time.</li>
-</ul>
-<p>If you don’t need or want a server, consider using <a href="https://www.sqlite.org/index.html"><strong>SQLite</strong></a>, it
-is a serverless relational database management system that is
-configuration-free and portable. An SQLite database is a single file
-that can grow up to 281 TB or the file size limit of the file system
-used, whichever is smaller.</p>
-<p><strong>9- High-throughput data.</strong></p>
-<p>Organize the data hierarchically by plate and well as this is the
-structure most analysis software can use, e.g.:</p>
-<p>▽ Chromosome_condensation_project<br />
-▽ primary_screen<br />
-▽ images<br />
-▽ plate1_replicate1<br />
-▽ well001<br />
-W001-P001-Z000-T0000-s1234-Cy3.tif<br />
-W001-P001-Z000-T0000-s1234-EGFP.tif<br />
-▷ well002<br />
-▷ plate1_replicate2<br />
-▷ plate2_replicate1<br />
-▽ analysis<br />
-▷ configuration_files<br />
-▷ segmentation<br />
-▽ feature_extraction<br />
-▽ plate1_replicate1<br />
-▽ well001<br />
-W001-P001-Z000-T0000-s1234-Cy3.txt<br />
-W001-P001-Z000-T0000-s1234-EGFP.txt<br />
-▷ well002<br />
-▷ plate1_replicate2<br />
-▷ plate2_replicate1<br />
-▷ code<br />
-▷ validation_screen</p>
-<ul>
-<li>It is imperative to define naming and other conventions at the start
-of the project (see point 3 above). Respect of these conventions is
-extremely important as the volume of data usually prevents easy
-detection and fixing of problems.</li>
-<li>Automate all data writing steps. Never write or edit file names or
-data by hand. If there’s an issue, fix the code causing the
-problem.</li>
-<li>It is strongly recommended to build a database to capture
-relationships between different entities (e.g. association between
-reagents, images and proteins/genes) and associated metadata (e.g. what
-passed which quality control step, what data is derived from what…). The
-time invested doing this at the beginning will be largely repaid by the
-end of the project. Without a database, long-running projects always run
-into time-consuming data issues towards the end.</li>
-<li>All code used in the project should get its input parameters from a
-configuration file.</li>
-<li>Code used in the project should read from, and write to, the project
-database. This keeps the database up-to-date in a timely manner and
-ensures collaborators are all working with the same data.</li>
-<li>Keep configuration files and code under version control to keep
-track of the different iterations of the data analysis.</li>
-</ul>
-<p><strong>10- Ensure file integrity</strong></p>
-<p>Errors can happen when copying or moving files so copies should be
-checked against the original. This is done by comparing checksums of the
-two files. A simple way of doing this is to copy files using rsync then
-repeating the rsync command with the -n option to compare the two
-copies. Avoid copying files using drag-and-drop motions.</p>
+</div>
 </div>
 
 
